@@ -15,8 +15,8 @@
   ]
 
   function isRedFruit( fruitName: string ): boolean {
-    const fruits = ['manzana', 'cereza', 'ciruela']
-    return fruits.includes(fruitName);
+    const redFruits = ['manzana', 'cereza', 'ciruela']
+    return redFruits.includes(fruitName);
   }
 
   function getFruitsByColor( fruitColor: string ): string[] {
