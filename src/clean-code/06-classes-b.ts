@@ -3,31 +3,43 @@
   type Gender = 'M' | 'F';
 
   interface IPerson {
-    name: string;
-    gender: Gender;
     birthdate: Date;
+    gender: Gender;
+    name: string;
+  }
+
+  interface IUser extends IPerson {
+    email: string;
+    role: string;
+  }
+
+  interface IUserSetting extends IUser {
+    lastOpenFolder: string;
+    workingDirectory: string;
   }
 
   class Person {
-    constructor(
-      public name: string,
-      public gender: Gender,
-      public birthdate: Date
-    ) {}
+    public birthdate: Date;
+    public gender: string;
+    public name: string;
+
+    constructor(person: IPerson) {
+      this.birthdate = person.birthdate;
+      this.gender = person.gender;
+      this.name = person.name;
+    }
   }
 
   class User extends Person {
+    public email: string;
     public lastAccess: Date;
+    public role: string;
 
-    constructor(
-      public email: string,
-      public role: string,
-      name: string,
-      gender: Gender,
-      birthdate: Date
-    ) {
-      super(name, gender, birthdate);
+    constructor(user: IUser) {
+      super(user as IPerson);
+      this.email = user.email;
       this.lastAccess = new Date();
+      this.role = user.role;
     }
 
     checkCredentials() {
@@ -35,29 +47,29 @@
     }
   }
 
-  /* class UserSettings extends User {
-    constructor(
-      public workingDirectory: string,
-      public lastOpenFolder: string,
-      email: string,
-      role: string,
-      name: string,
-      gender: Gender,
-      birthdate: Date
-    ) {
-      super(email, role, name, gender, birthdate);
+  class UserSettings extends User {
+    public lastOpenFolder: string;
+    public workingDirectory: string;
+
+    constructor(setting: IUserSetting) {
+      super(setting as IUser);
+
+      this.workingDirectory = setting.workingDirectory;
+      this.lastOpenFolder = setting.lastOpenFolder;
     }
   }
 
-  const userSettings = new UserSettings(
-    '/usr/home',
-    '/home',
-    'iancardenas96@gmail.com',
-    'Admin',
-    'Ian',
-    'M',
-    new Date('1996-01-22')
-  );
+  const setting: IUserSetting = {
+    birthdate: new Date('1996-01-22'),
+    email: 'iancardenas96@gmail.com',
+    gender: "M",
+    lastOpenFolder: "/homr",
+    name: "Ian",
+    role: "Admin",
+    workingDirectory: "/usr/home",
+  }
 
-  console.log({ userSettings }); */
+  const userSettings = new UserSettings(setting);
+
+  console.log({ userSettings });
 })();
