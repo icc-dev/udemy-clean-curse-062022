@@ -1,5 +1,15 @@
 (() => {
-  // without single responsability
+  // with single responsability
+
+  /**
+   * Priorizar la composición frente a la herencia
+   * 1.- Evitar los extends, usar solo si es estrictamente necesario
+   * 
+   * En vez de contar con una clase que extiende de otra y asi
+   * susecivamente, se contara con una clase que tenga como 
+   * propiedades cada una de las clases que estan involucradas.
+   */
+
   type Gender = 'M' | 'F';
 
   interface IPerson {
@@ -8,14 +18,20 @@
     name: string;
   }
 
-  interface IUser extends IPerson {
+  interface IUser {
     email: string;
     role: string;
   }
 
-  interface IUserSetting extends IUser {
+  interface ISetting {
     lastOpenFolder: string;
     workingDirectory: string;
+  }
+
+  interface IUserSetting {
+    person: IPerson;
+    user: IUser;
+    setting: ISetting;
   }
 
   class Person {
@@ -23,23 +39,22 @@
     public gender: string;
     public name: string;
 
-    constructor(person: IPerson) {
-      this.birthdate = person.birthdate;
-      this.gender = person.gender;
-      this.name = person.name;
+    constructor({birthdate, gender, name}: IPerson) {
+      this.birthdate = birthdate;
+      this.gender = gender;
+      this.name = name;
     }
   }
 
-  class User extends Person {
+  class User {
     public email: string;
     public lastAccess: Date;
     public role: string;
 
-    constructor(user: IUser) {
-      super(user as IPerson);
-      this.email = user.email;
+    constructor({email, role}: IUser) {
+      this.email = email;
       this.lastAccess = new Date();
-      this.role = user.role;
+      this.role = role;
     }
 
     checkCredentials() {
@@ -47,29 +62,46 @@
     }
   }
 
-  class UserSettings extends User {
+  class Setting {
     public lastOpenFolder: string;
     public workingDirectory: string;
 
-    constructor(setting: IUserSetting) {
-      super(setting as IUser);
-
-      this.workingDirectory = setting.workingDirectory;
-      this.lastOpenFolder = setting.lastOpenFolder;
+    constructor({workingDirectory, lastOpenFolder}: ISetting) {
+      this.workingDirectory = workingDirectory;
+      this.lastOpenFolder = lastOpenFolder;
     }
   }
 
+  class UserSettings {
+    public person: Person;
+    public user: User;
+    public setting: Setting;
+
+    constructor({person, user, setting}: IUserSetting) {
+      this.person = new Person(person);
+      this.user = new User(user);
+      this.setting = new Setting(setting);
+    }
+  }
+
+
   const setting: IUserSetting = {
-    birthdate: new Date('1996-01-22'),
-    email: 'iancardenas96@gmail.com',
-    gender: "M",
-    lastOpenFolder: "/homr",
-    name: "Ian",
-    role: "Admin",
-    workingDirectory: "/usr/home",
+    person: {
+      birthdate: new Date('1996-01-22'),
+      name: "Ian",
+      gender: "M",
+    },
+    user: {
+      email: 'iancardenas96@gmail.com',
+      role: "Admin",
+    },
+    setting: {
+      lastOpenFolder: "/homr",
+      workingDirectory: "/usr/home",
+    }
   }
 
   const userSettings = new UserSettings(setting);
-
-  console.log({ userSettings });
+  console.log(userSettings.user.checkCredentials());
+  console.log({ ...userSettings });
 })();
