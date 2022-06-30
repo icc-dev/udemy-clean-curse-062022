@@ -6,22 +6,25 @@
 
   class Person {
     constructor(
-      public name: string,
+      public firstName: string,
+      public lastName: string, // <- first change
       public gender: Gender,
       public birthdate: Date
     ) {}
   }
 
+  // Change on Person trigger error in super of User
   class User extends Person {
     constructor(
       public email: string,
       public role: string,
       private lastAccess: Date,
-      name: string,
+      firstName: string,
+      lastName: string, // <- second change
       gender: Gender,
       birthdate: Date
     ) {
-      super(name, gender, birthdate);
+      super(firstName, lastName, gender, birthdate); // <- third change, fix super
       this.lastAccess = new Date();
     }
 
@@ -36,11 +39,12 @@
       public lastFolderOpen: string,
       email: string,
       role: string,
-      name: string,
+      firstName: string,
+      lastName: string, // <- fourth change
       gender: Gender,
       birthdate: Date
     ) {
-      super(email, role, new Date(), name, gender, birthdate);
+      super(email, role, new Date(), firstName, lastName, gender, birthdate); // fifth change, fix super
     }
   }
 
@@ -50,6 +54,7 @@
     'fernando@google.com',
     'F',
     'Fernando',
+    'Herrera', // New implementation
     'M',
     new Date('1985-10-21')
   );
