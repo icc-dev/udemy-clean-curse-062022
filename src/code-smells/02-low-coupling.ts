@@ -5,18 +5,21 @@
   type Gender = 'M' | 'F';
 
   interface PersonProps {
-    name: string;
+    firstName: string;
+    lastName: string; // First Change
     gender: Gender;
     birthdate: Date;
   }
 
   class Person {
-    public name: string;
+    public firstName: string;
+    public lastName: string; // Apply change of interface
     public gender: Gender;
     public birthdate: Date;
 
-    constructor({ name, gender, birthdate }: PersonProps) {
-      this.name = name;
+    constructor({ firstName, lastName, gender, birthdate }: PersonProps) { // Apply change of interface
+      this.firstName = firstName;
+      this.lastName = lastName;
       this.gender = gender;
       this.birthdate = birthdate;
     }
@@ -63,23 +66,20 @@
     email: string;
     gender: Gender;
     lastFolderOpen: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     role: string;
     workingDirectory: string;
   }
 
   class UserSettings {
-    // constructor(
-    //     public person: Person,
-    //     public user  : User,
-    //     public settings: Settings,
-    // ){}
     public person: Person;
     public user: User;
     public settings: Settings;
 
     constructor({
-      name,
+      firstName,
+      lastName,
       gender,
       birthdate,
       email,
@@ -87,7 +87,7 @@
       workingDirectory,
       lastFolderOpen,
     }: UserSettingsProps) {
-      this.person = new Person({ name, gender, birthdate });
+      this.person = new Person({ firstName, lastName, gender, birthdate });
       this.user = new User({ email, role });
       this.settings = new Settings({ workingDirectory, lastFolderOpen });
     }
@@ -98,7 +98,8 @@
     email: 'fernando@google.com',
     gender: 'M',
     lastFolderOpen: '/home',
-    name: 'Fernando',
+    firstName: 'Ian',
+    lastName: 'Herrera',
     role: 'Admin',
     workingDirectory: '/usr/home',
   });
